@@ -1,0 +1,66 @@
+#数字を英語に変換
+#小数点に対応
+#例外時は−１を出力
+
+import sys
+input=sys.stdin.readline
+
+num={1:"one",2:"two",3:"three",4:"four",5:"five",6:"six",7:"seven",8:"eight",9:"nine",0:"zero",10:"ten",
+11:"eleven",12:"twelve",13:"thirteen",14:"fourteen",15:"fifteen",16:"sixteen",17:"seventeen",18:"eighteen",19:"nineteen",20:"twenty",30:"thirty",40:"fourty",50:"fifty",60:"sixty",70:"seventy",80:"eighty",90:"ninety",
+100:"hundred",1000:"thousand",1000000:"million",1000000000:"billion"}
+
+ans=""
+
+try:
+    number=input()
+    if "." in number:
+        integer,decimal=map(str,number.split("."))
+        integer=integer.strip("\n")
+        decimal=decimal.strip("\n")
+        ans+="point"
+        for i in decimal:
+            ans+=" "+num[int(i)]
+    else:
+        integer=number
+        integer.strip("\n")
+    count=0
+    integer=[i for i in integer]
+    integer.reverse()
+    for i in range(0,len(integer),3):
+        i=int(i)
+        count+=1
+        if count==2:
+            ans=num[1000]+" "+ans
+        elif count==3:
+            ans=num[1000000]+" "+ans
+        elif count==4:
+            ans=num[1000000000]+" "+ans
+        minicount=0
+        for j in integer[i:]:
+            j=int(j)
+            minicount+=1
+            if minicount==1:
+                if j==0:
+                    continue
+                ans=num[j]+" "+ans
+                one=num[j]
+                one_co=j
+            elif minicount==2:
+                if j==0:
+                    continue
+                if j==1:
+                    ans=ans.lstrip(one+" ")
+                    ans=num[j*10+one_co]+" "+ans
+                else:
+                    ans=num[j*10]+" "+ans
+            elif minicount==3:
+                if j==0:
+                    continue
+                ans=num[j]+" "+num[100]+" "+ans
+            else:
+                break
+
+    ans=str.capitalize(ans)
+    print(ans)
+except:
+    print(-1)
